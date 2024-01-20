@@ -82,14 +82,20 @@ def main():
     mileage_log = []
     while final_miles < TOTAL_MILES_CALCULATED:
         frame = random.choice(final_data)
-        miles = int(frame.split(':')[5].split(',')[0])
-        final_miles += miles
-        mileage_log.append(frame)
+        if frame in mileage_log:
+            pass
+        else:
+            miles = int(frame.split(':')[5].split(',')[0])
+            final_miles += miles
+            mileage_log.append(frame)
 
+    sorted_mileage_log = []
     for ea in sorted(mileage_log):
-        print(ea)
+        sorted_mileage_log.append(ea)
     
     print(final_miles)
+    df = pd.DataFrame(sorted_mileage_log)
+    df.to_excel("test.xlsx", index=False)
 
 
 

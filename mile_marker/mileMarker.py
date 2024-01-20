@@ -9,11 +9,10 @@ import random
 OW_LOWER_MILEAGE_LIMIT = 5
 OW_UPPER_MILEAGE_LIMIT = 37
 
-TOTAL_MILES_CALCULATED = 200
+TOTAL_MILES_CALCULATED = 3000
 
 # List of Reasons for going places
-travel_category = [
-    "Meals with Clients",
+travel_category_work = [
     "Equipment Pickup / Purchase",
     "Consulting Service Provided", 
     "On-site Penetration Test", 
@@ -25,11 +24,15 @@ travel_category = [
     "Consulting"
     ]
 
+travel_category_food = [
+    "Meals with Clients",
+]
+
 travel_miles = {
     "Reston, VA": 45,
     "Arlington": 46,
     "C St Washington, DC": 54,
-    "Becton Dickenson": 8,
+    "Becton Dickenson": 11,
     "Starbucks": 4,
     "Annapolis, MD": 33,
     "McLean, VA": 44,
@@ -37,6 +40,7 @@ travel_miles = {
     "PA Office": 97,
     "Maison Greene": 17,
     "Nada, Bethesda": 33,
+    "El Rodeo": 9
     }
 
 
@@ -51,15 +55,42 @@ def main():
     date_list = pd.date_range(start_date, end_date, freq=D)
     #for i in date_list[0:10]:
     #    print(i)
-    counter = 0
-    while counter <= TOTAL_MILES_CALCULATED:
+ 
+    data_list = []
+    total_miles = 0
+
+    while total_miles < TOTAL_MILES_CALCULATED:
         miles_rand_choice = random.choice(list(travel_miles.values()))
+        round_trip_miles = miles_rand_choice * 2
         location_from_miles = list(travel_miles.keys())[list(travel_miles.values()).index(miles_rand_choice)]
-        print('Location: {}, Miles one-way: {}'.format(location_from_miles, miles_rand_choice))
-        counter += 200
-        if counter == TOTAL_MILES_CALCULATED:
-            break
+        if miles_rand_choice < 10:
+            reason_for_trip = random.choice(list(travel_category_food))
+        else:
+            reason_for_trip = random.choice(list(travel_category_work))
+        total_miles += round_trip_miles
+        data_list.append('Location: {}, Miles round-trip: {}, Reason: {}'.format(location_from_miles, round_trip_miles, reason_for_trip))
+
+    final_miles = 0
+    final_data = []
+
+    for date in date_list:
+        data_set = random.choice(data_list)
+        final_data.append('Date: {}, {}'.format(date, data_set))
+        #miles = int(data_set.split(':')[2].split(',')[0])
+        #final_miles += miles
+
+    mileage_log = []
+    while final_miles < TOTAL_MILES_CALCULATED:
+        frame = random.choice(final_data)
+        miles = int(frame.split(':')[5].split(',')[0])
+        final_miles += miles
+        mileage_log.append(frame)
+
+    for ea in sorted(mileage_log):
+        print(ea)
     
+    print(final_miles)
+
 
 
 if __name__=="__main__":  

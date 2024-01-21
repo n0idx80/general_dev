@@ -47,7 +47,7 @@ travel_miles = {
 def main():
     start_date = datetime.strptime("2023-10-14", '%Y-%m-%d')
     end_date = datetime.strptime("2023-12-31", '%Y-%m-%d')
-
+    
 
     # Difference between day D means one day: B means business days
     D = 'B'
@@ -75,17 +75,18 @@ def main():
 
     for date in date_list:
         data_set = random.choice(data_list)
-        final_data.append('Date: {}, {}'.format(date, data_set))
+        final_data.append('Date: {}, {}'.format(date.date(), data_set))
         #miles = int(data_set.split(':')[2].split(',')[0])
         #final_miles += miles
 
     mileage_log = []
     while final_miles < TOTAL_MILES_CALCULATED:
         frame = random.choice(final_data)
+        print(frame)
         if frame in mileage_log:
             pass
         else:
-            miles = int(frame.split(':')[5].split(',')[0])
+            miles = int(frame.split(':')[3].split(',')[0])
             final_miles += miles
             mileage_log.append(frame)
 
@@ -94,8 +95,8 @@ def main():
         sorted_mileage_log.append(ea)
     
     print(final_miles)
-    df = pd.DataFrame(sorted_mileage_log)
-    df.to_excel("test.xlsx", index=False)
+    #df = pd.DataFrame(sorted_mileage_log)
+    #df.to_excel("test.xlsx", index=False)
 
 
 
